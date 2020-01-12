@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        // That's a third test
         currentHealth = maxHealth;
     }
 
