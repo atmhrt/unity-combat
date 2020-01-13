@@ -6,14 +6,12 @@ public class Combat : MonoBehaviour
 {
     public Animator animator;
 
-    public Transform attackPoint;
-    public float attackRange = 1f;
     public int attackDamage = 20;
 
-    public LayerMask enemyLayers;
+    // public LayerMask enemyLayers;
 
     private Collider2D swordCollider;
-    private GameObject[] enemies;
+    private List<GameObject> hitEnemies = new List<GameObject>();
 
     void Start()
     {
@@ -38,14 +36,17 @@ public class Combat : MonoBehaviour
         {
             if (swordCollider.enabled)
             {
-                GameObject[] hitEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+                GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-                foreach (GameObject enemy in hitEnemies) {
+                foreach (GameObject enemy in enemies) {
                     Collider2D enemyCollider = enemy.GetComponent<Collider2D>();
-                    if (swordCollider.IsTouching(enemyCollider))
+                    if (
+                        swordCollider.IsTouching(enemyCollider)
+                        && !hitEnemies.Contains(enemy)
+                    )
                     {
                         enemy.GetComponent<EnemyCombat>().GetAttacked(attackDamage);
-                        Debug.Log("Enemy attacked");
+                        hitEnemies.Add(enemy);
                     }
                 }
             }
@@ -74,9 +75,8 @@ public class Combat : MonoBehaviour
         animator.SetTrigger("Block");
     }
 
-    void OnDrawGizmosSelected()
+    public void ClearHitEnemies()
     {
-        if (attackPoint == null) return;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        hitEnemies.Clear();
     }
 }

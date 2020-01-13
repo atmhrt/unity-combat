@@ -818,12 +818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 560787661}
-  attackPoint: {fileID: 84030505}
-  attackRange: 1.45
-  attackDamage: 40
-  enemyLayers:
-    serializedVersion: 2
-    m_Bits: 256
+  attackDamage: 30
 --- !u!50 &560821871
 Rigidbody2D:
   serializedVersion: 4
