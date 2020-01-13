@@ -7,6 +7,7 @@ public class EnemyMovement : MonoBehaviour
     public Transform target;
     public float moveSpeed;
     public Animator animator;
+    public bool isFollowing = true;
 
     void Update()
     {
@@ -17,8 +18,10 @@ public class EnemyMovement : MonoBehaviour
         if (distance > 4f) {
             animator.SetBool("IsWalking", true);
             FollowTarget(distance);
+            isFollowing = true;
         } else {
             animator.SetBool("IsWalking", false);
+            isFollowing = false;
         }
     }
 
