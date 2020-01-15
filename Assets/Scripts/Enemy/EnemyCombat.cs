@@ -8,55 +8,49 @@ public class EnemyCombat : MonoBehaviour
     public int health = 100;
     public bool alive = true;
 
-    private bool isBlocking = false;
-    private float blockTimer = 2f;
+    public bool inAttackRange = false;
+
+    public float blockTime = .6f;
+    private float blockTimeLeft;
 
     private EnemyMovement movementController;
 
     void Start()
     {
         movementController = gameObject.GetComponent<EnemyMovement>();
+        blockTimeLeft = blockTime;
     }
 
     void Update()
     {
-        if (!isBlocking) {
-            blockTimer -= Time.deltaTime;
+        blockTimeLeft -= Time.deltaTime;
 
-            if (blockTimer <= 0.0f)
-            {
-                blockTimer = 2f;
+        if (blockTimeLeft <= 0.0f)
+        {
+            if (
+                inAttackRange &&
+                !animator.GetBool("InPrimaryCombatAnim")
+            ) {
                 animator.SetTrigger("Block");
             }
-        }
-
-        if (Input.GetKeyDown("p"))
-        {
-            gameObject.transform.Find("Sparks").gameObject.GetComponent<ParticleSystem>().Play();
+            blockTimeLeft = blockTime;
         }
     }
 
     public void GetAttacked(int damage)
     {
-        health -= damage;
-
-        if (health > 0) {
-            animator.SetTrigger("HurtIdle");
+        if (animator.GetBool("IsBlocking"))
+        {
+            gameObject.transform.Find("Sparks").gameObject.GetComponent<ParticleSystem>().Play();
         } else {
-            animator.SetTrigger("Death");
-            alive = false;
+            health -= damage;
+
+            if (health > 0) {
+                animator.SetTrigger("HurtIdle");
+            } else {
+                animator.SetTrigger("Death");
+                alive = false;
+            }
         }
-    }
-
-    public void SetIsBlocking()
-    {
-        isBlocking = true;
-        Debug.Log("isBlocking");
-    }
-
-    public void UnsetIsBlocking()
-    {
-        isBlocking = false;
-        Debug.Log("not isBlocking");
     }
 }

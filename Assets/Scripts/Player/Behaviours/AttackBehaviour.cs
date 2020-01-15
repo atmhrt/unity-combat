@@ -5,11 +5,17 @@ using UnityEngine;
 public class AttackBehaviour : StateMachineBehaviour
 {
     private Combat combatController;
+    private GameObject[] enemies;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         combatController = animator.GetComponent<Combat>();
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemy in enemies) {
+            enemy.GetComponent<EnemyCombat>().inAttackRange = true;
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -22,6 +28,10 @@ public class AttackBehaviour : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         combatController.ClearHitEnemies();
+
+        foreach (GameObject enemy in enemies) {
+            enemy.GetComponent<EnemyCombat>().inAttackRange = false;
+        }
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
