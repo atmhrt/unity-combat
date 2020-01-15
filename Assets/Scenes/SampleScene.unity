@@ -165,6 +165,8 @@ MonoBehaviour:
   alive: 1
   inAttackRange: 0
   blockTime: 1
+  gotHurtInCurrAttack: 0
+  movementController: {fileID: 0}
 --- !u!114 &106380922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 407a0b0e01c166f4c80e1da443600b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 560821869}
+  target: {fileID: 0}
   moveSpeed: 5
   animator: {fileID: 106380923}
   isFollowing: 1

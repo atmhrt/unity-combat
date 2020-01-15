@@ -45,7 +45,8 @@ public class Combat : MonoBehaviour
                         && !hitEnemies.Contains(enemy)
                     )
                     {
-                        enemy.GetComponent<EnemyCombat>().GetAttacked(attackDamage);
+                        enemy.GetComponent<EnemyCombat>().GetAttacked(attackDamage, gameObject.transform);
+                        enemy.GetComponent<EnemyCombat>().gotHurtInCurrAttack = true;
                         hitEnemies.Add(enemy);
                     }
                 }
@@ -77,6 +78,11 @@ public class Combat : MonoBehaviour
 
     public void ClearHitEnemies()
     {
+        foreach (GameObject enemy in hitEnemies)
+        {
+            enemy.GetComponent<EnemyCombat>().gotHurtInCurrAttack = false;
+        }
+
         hitEnemies.Clear();
     }
 }

@@ -40,4 +40,9 @@ public class EnemyMovement : MonoBehaviour
 
         transform.Translate(direction.x * deltaSpeed, direction.y * deltaSpeed, 0, Space.World);
     }
+
+    public void FollowTarget(Transform newTarget)
+    {
+        target = newTarget;
+    }
 }
