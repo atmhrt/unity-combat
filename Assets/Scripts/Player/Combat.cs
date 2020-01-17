@@ -5,8 +5,10 @@ using UnityEngine;
 public class Combat : MonoBehaviour
 {
     public Animator animator;
-
+    public int health = 100;
+    public bool alive = true;
     public int attackDamage = 20;
+    public bool gotHurtInCurrAttack = false;
 
     // public LayerMask enemyLayers;
 
@@ -74,6 +76,23 @@ public class Combat : MonoBehaviour
     void Block()
     {
         animator.SetTrigger("Block");
+    }
+
+    public void GetAttacked(int damage, Transform adversary)
+    {
+        if (animator.GetBool("IsBlocking"))
+        {
+            gameObject.transform.Find("Sparks").gameObject.GetComponent<ParticleSystem>().Play();
+        } else {
+            health -= damage;
+
+            if (health > 0) {
+                animator.SetTrigger("HurtIdle");
+            } else {
+                animator.SetTrigger("Death");
+                alive = false;
+            }
+        }
     }
 
     public void ClearHitEnemies()
