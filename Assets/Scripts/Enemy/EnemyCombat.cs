@@ -28,11 +28,14 @@ public class EnemyCombat : MonoBehaviour
 
     private List<GameObject> hitEnemies = new List<GameObject>();
 
+    public AudioSource[] sounds;
+
     void Start()
     {
         movementController = gameObject.GetComponent<EnemyMovement>();
         blockTimeLeft = blockTime;
         swordCollider = gameObject.transform.Find("SwordCollider").gameObject.GetComponent<Collider2D>();
+        sounds = GetComponents<AudioSource>();
     }
 
     void Update()
@@ -61,6 +64,7 @@ public class EnemyCombat : MonoBehaviour
                 !gotHurtInCurrAttack
             ) {
                 animator.SetTrigger("Attack");
+                sounds[2].PlayDelayed(.35f);
             }
             attackTimeLeft = Random.Range(minAttackTime, maxAttackTime);
         }
@@ -102,11 +106,13 @@ public class EnemyCombat : MonoBehaviour
             if (animator.GetBool("IsBlocking"))
             {
                 gameObject.transform.Find("Sparks").gameObject.GetComponent<ParticleSystem>().Play();
+                sounds[0].Play(0);
             } else {
                 health -= damage;
 
                 if (health > 0) {
                     animator.SetTrigger("HurtIdle");
+                    sounds[1].Play(0);
                 } else {
                     animator.SetTrigger("Death");
                     alive = false;

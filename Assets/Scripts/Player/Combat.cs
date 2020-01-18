@@ -15,9 +15,12 @@ public class Combat : MonoBehaviour
     private Collider2D swordCollider;
     private List<GameObject> hitEnemies = new List<GameObject>();
 
+    public AudioSource[] sounds;
+
     void Start()
     {
         swordCollider = gameObject.transform.Find("SwordCollider").gameObject.GetComponent<Collider2D>();
+        sounds = GetComponents<AudioSource>();
     }
 
     void Update()
@@ -65,6 +68,7 @@ public class Combat : MonoBehaviour
     void Attack()
     {
         animator.SetTrigger("Attack");
+        sounds[1].PlayDelayed(.35f);
 
         // Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         //
@@ -83,11 +87,13 @@ public class Combat : MonoBehaviour
         if (animator.GetBool("IsBlocking"))
         {
             gameObject.transform.Find("Sparks").gameObject.GetComponent<ParticleSystem>().Play();
+            sounds[0].Play(0);
         } else {
             health -= damage;
 
             if (health > 0) {
                 animator.SetTrigger("HurtIdle");
+                sounds[2].Play(0);
             } else {
                 animator.SetTrigger("Death");
                 alive = false;
